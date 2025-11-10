@@ -3,4 +3,12 @@ import { pluginReact } from '@rsbuild/plugin-react';
 
 export default defineConfig({
   plugins: [pluginReact()],
+  source: {
+    entry: {
+      index: './src/index.tsx',
+    },
+  },
+  html: {
+    title: 'MPD Config Switcher'
+  },
 });

@@ -1,4 +1,4 @@
-module mpdConfigSwitcher
+module mpd-config-switcher
 
 go 1.24.5
 
