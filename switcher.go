@@ -8,7 +8,9 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
+	"runtime"
 	"strings"
+	"time"
 
 	"embed"
 	"flag"
@@ -18,6 +20,26 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/filesystem"
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
+
+// openBrowser tries to open the URL in a browser, depending on the OS.
+func openBrowser(url string) bool {
+	var err error
+	switch runtime.GOOS {
+	case "linux":
+		err = exec.Command("xdg-open", url).Start()
+	case "windows":
+		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
+	case "darwin":
+		err = exec.Command("open", url).Start()
+	default:
+		err = fmt.Errorf("unsupported platform")
+	}
+	if err != nil {
+		log.Printf("Failed to open browser: %v", err)
+		return false
+	}
+	return true
+}
 
 //go:embed all:dist
 var frontendFS embed.FS
@@ -29,6 +51,7 @@ type Config struct {
 	SystemdUnitName string
 	UseSudo         bool
 	Expose          bool
+	OpenBrowser     bool
 }
 
 var config Config
@@ -40,6 +63,7 @@ func init() {
 	flag.StringVar(&config.SystemdUnitName, "systemd-unit-name", "mpd.service", "The systemd unit to restart.")
 	flag.BoolVar(&config.UseSudo, "sudo", false, "Use 'sudo systemctl' instead of 'systemctl --user'.")
 	flag.BoolVar(&config.Expose, "expose", false, "Listen to all interfaces, so you can use this app from the comfort of other devices in your LAN.")
+	flag.BoolVar(&config.OpenBrowser, "open", false, "When true, launch the main browser to the app URL.")
 	flag.Parse()
 
 	// Resolve home dir if '~' is used in config-dir
@@ -207,5 +231,25 @@ func main() {
 	}
 
 	log.Printf("MPD Switcher Go backend listening on %s", listenAddr)
+
+	// Open browser if the flag is set
+	if config.OpenBrowser {
+		appURL := fmt.Sprintf("http://localhost:%d", config.Port)
+		if config.Expose {
+			// Try to get local IP if exposed, otherwise use localhost
+			// This is a simplification; a real implementation might need to discover the actual IP
+			appURL = fmt.Sprintf("http://%s:%d", "localhost", config.Port)
+		}
+		log.Printf("Opening browser to %s", appURL)
+		go func() {
+			// Give the server a moment to start before opening the browser
+			// This is a simple delay, a more robust solution might poll the server
+			time.Sleep(1 * time.Second)
+			if !openBrowser(appURL) {
+				log.Printf("Please open your web browser and navigate to %s", appURL)
+			}
+		}()
+	}
+
 	log.Fatal(app.Listen(listenAddr))
 }
