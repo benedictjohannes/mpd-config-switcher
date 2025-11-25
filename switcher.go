@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/exec"
@@ -142,7 +141,7 @@ func handleSwitchMode(c *fiber.Ctx) error {
 	newMpdConfContent := fmt.Sprintf("# CurrentConfig: %s\n%s\n%s", targetPart.Key, baseContent, targetPartContent)
 
 	// Write the new mpd.conf
-	err = ioutil.WriteFile(mainMpdConfPath, []byte(newMpdConfContent), 0644) // 0644 for read/write by owner, read by others
+	err = os.WriteFile(mainMpdConfPath, []byte(newMpdConfContent), 0644) // 0644 for read/write by owner, read by others
 	if err != nil {
 		log.Printf("Error writing new mpd.conf: %v", err)
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Failed to write new MPD configuration."})
