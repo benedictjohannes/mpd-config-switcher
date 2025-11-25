@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"path/filepath"
 	"regexp"
-	"runtime"
 	"strings"
 	"time"
 
@@ -21,19 +20,9 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/proxy"
 )
 
-// openBrowser tries to open the URL in a browser, depending on the OS.
+// openBrowser tries to open the URL in a browser
 func openBrowser(url string) bool {
-	var err error
-	switch runtime.GOOS {
-	case "linux":
-		err = exec.Command("xdg-open", url).Start()
-	case "windows":
-		err = exec.Command("rundll32", "url.dll,FileProtocolHandler", url).Start()
-	case "darwin":
-		err = exec.Command("open", url).Start()
-	default:
-		err = fmt.Errorf("unsupported platform")
-	}
+	err := exec.Command("xdg-open", url).Start()
 	if err != nil {
 		log.Printf("Failed to open browser: %v", err)
 		return false
