@@ -4,11 +4,34 @@
 -   **Dynamic Config Discovery**: The backend scans a configurable directory for `mpd` configuration "parts" (`{mpdConfigDir}/config-*.mpd.conf.part`).
 -   **Single binary**: Package as a go app with a web GUI. You can switch your `mpd` configuration with your phone!
 
-## Usage
+## Installation
 
-1.  **Download the binary**: Download the latest `mpd-config-switcher` binary from the [GitHub Releases](https://github.com/your-repo/mpd-switcher/releases) page.
-2.  **Make it executable**: `chmod +x mpd-config-switcher`
+The easiest way to get the `mpd-config-switcher` is to download a pre-built binary from the [GitHub Releases](https://github.com/benedictjohannes/mpd-config-switcher/releases) page. Binaries are available for Linux, supporting both `amd64` and `arm64` architectures.
+
+1.  **Download the binary**: Choose the appropriate binary for your operating system and architecture.
+    *   `mpd-config-switcher-linux-amd64` (for 64-bit Linux)
+    *   `mpd-config-switcher-linux-arm64` (for ARM64 Linux)
+2.  **Make it executable**: `chmod +x mpd-config-switcher-<os>-<arch>` (replace `<os>-<arch>` with the actual name).
 3.  **Place it**: Move the binary to a directory in your PATH (e.g., `/usr/local/bin`).
+
+## Building from Source
+
+If you prefer to build the `mpd-config-switcher` from source, follow these steps:
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/benedictjohannes/mpd-config-switcher.git
+    cd mpd-switcher
+    ```
+2.  **Install Dependencies**:
+    *   Go: Ensure Go (version 1.22 or higher) is installed.
+    *   Node.js & npm: Ensure Node.js (version 20 or higher) and npm are installed.
+3.  **Build the binary**:
+    ```bash
+    make
+    ```
+    This command will build the frontend, embed it into the Go binary, and produce a single `mpd-config-switcher` executable in the project root.
+
 
 ## Configuration
 
@@ -81,5 +104,4 @@ This project started for my personal use, as I find it extremely cumbersome to s
         ```
         This will proxy API requests to the Go backend and all other requests to the React dev server.
 
-3.  **Building the binary**:
-    -   Simply run `make` in the project root. This will build the frontend, embed it into the Go binary, and produce a single `mpd-config-switcher` executable.
+
