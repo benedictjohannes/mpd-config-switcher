@@ -71,35 +71,12 @@ These are the easiest steps to have it run automatically on boot:
 
 ### 1. Download and configure the binary 
 
-You can copy-paste this block in your terminal:
+You can install with a single line in your terminal:
 
 ```bash
-# 1. Determine the CPU architecture (e.g., x86_64 -> amd64, aarch64 -> arm64)
-#    and construct the download URL.
-ARCH=$(uname -m)
-if [ "$ARCH" = "x86_64" ]; then
-    RELEASE_ARCH="amd64"
-elif [ "$ARCH" = "aarch64" ]; then
-    RELEASE_ARCH="arm64"
-else
-    echo "Unsupported architecture: $ARCH."
-    exit 1
-fi
-
-DOWNLOAD_URL="https://github.com/benedictjohannes/mpd-config-switcher/releases/latest/download/mpd-config-switcher-${RELEASE_ARCH}"
-
-# 2. Download the binary, save it as a temporary file.
-echo "Downloading mpd-config-switcher for ${RELEASE_ARCH}..."
-curl --silent -LJO "$DOWNLOAD_URL"
-
-# 3. Grant execution permission.
-chmod +x mpd-config-switcher-${RELEASE_ARCH}
-
-# 4. Move the binary to a system path. 
-#    /usr/local/bin is the standard and most suitable location for locally 
-#    compiled or third-party executables not managed by the OS package manager.
-sudo mv mpd-config-switcher-${RELEASE_ARCH} /usr/local/bin/mpd-config-switcher
+curl -sL https://github.com/benedictjohannes/mpd-config-switcher/releases/latest/download/mpd-config-switcher-$(uname -m | sed 's/x86_64/amd64/;s/aarch64/arm64/') -o mpd-config-switcher && chmod +x mpd-config-switcher && sudo mv mpd-config-switcher /usr/local/bin/
 ```
+
 ### 2. Confirm that the binary is runnable from your system path:
 ```bash
 mpd-config-switcher --help
