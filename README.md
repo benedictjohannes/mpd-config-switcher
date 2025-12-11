@@ -45,7 +45,7 @@ The MPD Config Switcher works by combining configuration "parts" into your main 
         # ConfigPartName: Exclusive (DSD)
         ```
         If this comment is missing, the tool will fall back to a title-cased version of the `key`.
-3.  **`mpd.conf`**: The tool will write the combined content of `base.mpd.conf.part` and the selected `config-*.mpd.conf.part` to this file. It will also add a comment `# CurrentConfig: <modeKey>` as the first line to track the currently active mode.
+3.  **`mpd.conf`**: The tool will concatenate the content of `base.mpd.conf.part` and the selected `config-*.mpd.conf.part` to this file. It will also add a comment `# CurrentConfig: <modeKey>` as the first line to track the currently active mode.
 
 **Example Directory Structure (`--config-dir`):**
 
@@ -79,6 +79,120 @@ All flags are optional:
 -   `--expose`: Listen to all interfaces, so you can use this app from the comfort of other devices in your LAN/WiFi. (default: `false`)
 -   `--open`: When true, launch the main browser to the app URL. (default: `false`)
 
+## Running it automatically
+
+This is the easiest steps to have it run automatically on boot:
+
+### 1. Download and configure the binary. 
+
+You can copy-paste this block in your terminal:
+
+```bash
+# 1. Determine the CPU architecture (e.g., x86_64 -> amd64, aarch64 -> arm64)
+#    and construct the download URL.
+ARCH=$(uname -m)
+if [ "$ARCH" = "x86_64" ]; then
+    RELEASE_ARCH="amd64"
+elif [ "$ARCH" = "aarch64" ]; then
+    RELEASE_ARCH="arm64"
+else
+    echo "Unsupported architecture: $ARCH."
+    exit 1
+fi
+
+DOWNLOAD_URL="https://github.com/benedictjohannes/mpd-config-switcher/releases/latest/download/mpd-config-switcher-${RELEASE_ARCH}"
+
+# 2. Download the binary, save it as a temporary file.
+echo "Downloading mpd-config-switcher for ${RELEASE_ARCH}..."
+curl --silent -LJO "$DOWNLOAD_URL"
+
+# 3. Grant execution permission.
+chmod +x mpd-config-switcher-${RELEASE_ARCH}
+
+# 4. Move the binary to a system path. 
+#    /usr/local/bin is the standard and most suitable location for locally 
+#    compiled or third-party executables not managed by the OS package manager.
+sudo mv mpd-config-switcher-${RELEASE_ARCH} /usr/local/bin/mpd-config-switcher
+```
+### 2. Confirm that the binary is runnable from your system path:
+```bash
+mpd-config-switcher --help
+```
+### 3. Create a systemd unit
+
+You have two options:
+
+#### As a user level unit 
+
+This option is recommended if your `mpd` is running as a user level service and you use Linux Desktop.
+
+1. Create the unit file
+```bash
+mkdir -p ~/.config/systemd/user
+nano ~/.config/systemd/user/mpd-config-switcher.service # ofc you can use vim too
+```
+1. Insert this to the file
+```ini
+[Unit]
+Description=MPD Config Switcher User Service
+# Wait for network. If you run MPD as a user service, you can append 'mpd.service'
+# Example: After=network.target mpd.service
+After=network.target
+
+[Service]
+# Path to the executable moved in the previous step, and configure the running parameter
+ExecStart=/usr/local/bin/mpd-config-switcher --port 56737 --expose
+# Standard directives
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=default.target
+```
+1. Enable and start the unit
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now mpd-config-switcher.service
+# optional: check the service status and logs
+systemctl --user status mpd-config-switcher.service
+```
+
+#### As system level unit
+
+1. Create the unit file
+```bash
+sudo nano /etc/systemd/system/mpd-config-switcher.service # ofc you can use vim too
+```
+1. Insert this to the file
+```ini
+[Unit]
+Description=MPD Config Switcher Service
+# assuming you have mpd unit
+After=network.target mpd.service
+
+[Service]
+# Set User/Group if needed, otherwise run as root (default for system units)
+# User=youruser
+# Group=youruser
+
+# Path to the executable moved in the previous step, and configure the running parameter
+ExecStart=/usr/local/bin/mpd-config-switcher --port 56737 --expose
+
+# Standard directives
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+```
+3. Enable and start the unit
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now mpd-config-switcher.service
+# optional: check the service status and logs
+systemctl status mpd-config-switcher.service
+```
+
 ## Disclaimer
 
 This project started for my personal use, as I find it extremely cumbersome to switch between mpd’s "Exclusive mode" that can play DSD natively and "Shared mode" that coexist naturally with other Pipewire (or Pulse Audio) programs. 
@@ -104,6 +218,6 @@ This project started for my personal use, as I find it extremely cumbersome to s
         ```bash
         go run . --fe-port=3000
         ```
-        This will proxy API requests to the Go backend and all other requests to the React dev server.
+        The `--fe-port=3000` flag tells the Go backend to reverse proxy all non-API requests to the React development server, enabling a seamless development experience.
 
 
