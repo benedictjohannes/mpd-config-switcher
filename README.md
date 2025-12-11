@@ -11,27 +11,13 @@ The easiest way to get the `mpd-config-switcher` is to download a pre-built bina
 1.  **Download the binary**: Choose the appropriate binary for your operating system and architecture.
     *   `mpd-config-switcher-linux-amd64` (for 64-bit Linux)
     *   `mpd-config-switcher-linux-arm64` (for ARM64 Linux)
+    *   You can see the [section to automatically download the latest version](#1-download-and-configure-the-binary).
 2.  **Make it executable**: `chmod +x mpd-config-switcher-<os>-<arch>` (replace `<os>-<arch>` with the actual name).
 3.  **Place it**: Move the binary to a directory in your PATH (e.g., `/usr/local/bin`).
 
-## Building from Source
+Alternatively, you can [build from source.](#building-from-source)
 
-If you prefer to build the `mpd-config-switcher` from source, follow these steps:
-
-1.  **Clone the repository**:
-    ```bash
-    git clone https://github.com/benedictjohannes/mpd-config-switcher.git
-    cd mpd-switcher
-    ```
-2.  **Install Dependencies**:
-    *   Go: Ensure Go (version 1.22 or higher) is installed.
-    *   Node.js & npm: Ensure Node.js (version 20 or higher) and npm are installed.
-3.  **Build the binary**:
-    ```bash
-    make
-    ```
-    This command will build the frontend, embed it into the Go binary, and produce a single `mpd-config-switcher` executable in the project root.
-
+> Tips: You can see the [Running it automatically](#running-it-automatically) section to configure it to run at boot. That way, this is always available for your usage.
 
 ## Configuration
 
@@ -81,9 +67,9 @@ All flags are optional:
 
 ## Running it automatically
 
-This is the easiest steps to have it run automatically on boot:
+These are the easiest steps to have it run automatically on boot:
 
-### 1. Download and configure the binary. 
+### 1. Download and configure the binary 
 
 You can copy-paste this block in your terminal:
 
@@ -198,6 +184,25 @@ systemctl status mpd-config-switcher.service
 This project started for my personal use, as I find it extremely cumbersome to switch between mpd’s "Exclusive mode" that can play DSD natively and "Shared mode" that coexist naturally with other Pipewire (or Pulse Audio) programs. 
 - If you find this project useful, you can give the project a star.
 - You're welcomed to create issues should you find any.
+
+## Build from Source
+
+If you prefer to build the `mpd-config-switcher` from source, follow these steps:
+
+1.  **Clone the repository**:
+    ```bash
+    git clone https://github.com/benedictjohannes/mpd-config-switcher.git
+    cd mpd-switcher
+    ```
+2.  **Install Dependencies**:
+    *   Go: Ensure Go (version 1.22 or higher) is installed.
+    *   Node.js & npm: Ensure Node.js (version 20 or higher) and npm are installed.
+3.  **Build the binary**:
+    ```bash
+    make
+    ```
+    This command will build the frontend, embed it into the Go binary, and produce a single `mpd-config-switcher` executable in the project root.
+
 
 ## Development
 
