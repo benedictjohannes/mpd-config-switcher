@@ -46,7 +46,7 @@ type Config struct {
 var config Config
 
 func init() {
-	flag.IntVar(&config.Port, "port", 6279, "Port for the backend server.")
+	flag.IntVar(&config.Port, "port", 56737, "Port for the backend server.")
 	flag.IntVar(&config.FrontendPort, "fe-port", 0, "DEV ONLY: Port for the frontend dev server (enables reverse proxy).")
 	flag.StringVar(&config.ConfigDir, "config-dir", "~/.config/mpd", "Directory containing mpd.conf parts.")
 	flag.StringVar(&config.SystemdUnitName, "systemd-unit-name", "mpd.service", "The systemd unit to restart.")
