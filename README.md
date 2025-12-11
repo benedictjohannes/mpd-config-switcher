@@ -54,8 +54,10 @@ The MPD Config Switcher works by combining configuration "parts" into your main 
 ├── base.mpd.conf.part
 ├── config-exclusive.mpd.conf.part
 ├── config-pipewire.mpd.conf.part
-└── mpd.conf (managed by the tool)
+└── mpd.conf (what the `mpd-config-switcher` will output)
 ```
+
+You can see parts of my own `mpd` configuration in the [ExampleConfiguration](./ExampleConfiguration)
 
 ## Usage
 

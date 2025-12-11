@@ -1,0 +1,14 @@
+# ConfigPartName: Exclusive (DSD)
+## notice the above first line, that's what'll get shown in the config switcher frontend.
+## everything below are just regular mpd config that'll be merged with the base config.
+
+audio_output {
+	type		"alsa"
+	name		"SABAJ USB AUDIO"
+	device		"hw:AUDIO"
+	auto_channels 	"no"
+	auto_resample	"no"
+	auto_format	"no"
+	mixer_type	"none"
+}
+

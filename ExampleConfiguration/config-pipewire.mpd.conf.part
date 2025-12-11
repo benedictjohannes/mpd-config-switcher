@@ -1,0 +1,10 @@
+# ConfigPartName: Pipewire
+## notice the above first line, that's what'll get shown in the config switcher frontend.
+## everything below are just regular mpd config that'll be merged with the base config.
+
+audio_output {
+	type		"pipewire"
+	name		"Pipewire Output"
+	#type		"pulse"
+	#name		"Pulseaudio Output"
+}

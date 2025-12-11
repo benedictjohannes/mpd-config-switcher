@@ -1,0 +1,22 @@
+# This is example for base mpd configuration, that'll be merged with the "config parts"
+
+# Read the user manual for documentation: http://www.musicpd.org/doc/user/
+# It's best to configure your own
+
+
+# Files and directories #######################################################
+music_directory		"~/Music/_unifyDirSymlink"
+playlist_directory		"~/Music/mpdPlaylists"
+#db_file			"/var/lib/mpd/mpd.db"
+log_file			"~/.config/mpd/log"
+zeroconf_enabled		"true"
+zeroconf_name			"MPD @ %h"
+password                        "some-password-for-mpd-you-would-like-to-set"
+
+# audio_output parts here are commented out because I manage them using the config parts
+#audio_output {
+#	type		"pipewire"
+#	name		"Pipewire Output"
+#	#type		"pulse"
+#	#name		"Pulseaudio Output"
+#}
