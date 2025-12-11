@@ -73,7 +73,7 @@ All flags are optional:
 -   `--fe-port <int>`: **DEV ONLY**: Port for the frontend dev server (enables reverse proxy).
 -   `--config-dir <path>`: Directory containing `mpd.conf` parts (default: `~/.config/mpd`, supports `~` for home directory).
 -   `--systemd-unit-name <string>`: The systemd unit to restart (default: `mpd.service`).
--   `--sudo`: Use `sudo systemctl` instead of `systemctl --user` (default: `false`).
+-   `--sudo`: Restart `mpd` using `sudo systemctl` instead of `systemctl --user` (default: `false`).
 -   `--expose`: Listen to all interfaces, so you can use this app from the comfort of other devices in your LAN/WiFi. (default: `false`)
 -   `--open`: When true, launch the main browser to the app URL. (default: `false`)
 
