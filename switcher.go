@@ -187,7 +187,6 @@ func restartMPD() error {
 
 func main() {
 	app := fiber.New()
-
 	api := app.Group("/api")
 	api.Get("/currentmode", handleCurrentMode)
 	api.Get("/configparts", handleGetConfigParts)
@@ -208,7 +207,7 @@ func main() {
 		// PROD MODE: Serve embedded files
 		app.Use("/", filesystem.New(filesystem.Config{
 			Root:       http.FS(frontendFS),
-			PathPrefix: "frontend/dist",
+			PathPrefix: "dist",
 			Browse:     true,
 			Index:      "index.html",
 		}))
