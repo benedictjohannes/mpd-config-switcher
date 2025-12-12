@@ -1,6 +1,6 @@
 # A Config Switcher and Restarter for `mpd`
 
- `mpd`' is configurable via its configuration (commonly `mpd.conf`). A change in the configuration file would require a restart of `mpd`. As such, switching between `mpd` output of "ALSA" exclusive mode that play DSD natively and "Shared mode" that coexist naturally with other Pipewire (or Pulse Audio) programs, is quite cumbersome. This tool aims to dynamically switch `mpd` configuration "parts" via an easy web GUI, with
+ `mpd` is configurable via its configuration (commonly `mpd.conf`). A change in the configuration file would require a restart of `mpd`. As such, switching between `mpd` output of "ALSA" exclusive mode that play DSD natively and "Shared mode" that coexist naturally with other Pipewire (or Pulse Audio) programs, is quite cumbersome. This tool aims to dynamically switch `mpd` configuration "parts" via an easy web GUI, with
 -   **Dynamic Config Discovery**: The backend scans a configurable directory for `mpd` configuration "parts" (`{mpdConfigDir}/config-*.mpd.conf.part`).
 -   **Single binary**: Package as a go app with a web GUI. You can switch your `mpd` configuration with your phone!
 
